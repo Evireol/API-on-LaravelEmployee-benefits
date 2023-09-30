@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Сен 30 2023 г., 02:16
+-- Время создания: Сен 30 2023 г., 06:04
 -- Версия сервера: 8.0.24
 -- Версия PHP: 8.0.14
 
@@ -42,7 +42,8 @@ CREATE TABLE `employees` (
 INSERT INTO `employees` (`id`, `email`, `password`, `created_at`, `updated_at`) VALUES
 (1, 'test@example.com', '$2y$10$IutV7oFNsSFa/X3cFAJkteghSVx84gyP3ZShNLJL5XLmfG59.Z.oe', '2023-09-27 20:53:34', '2023-09-27 20:53:34'),
 (2, 'test22@example.com', '$2y$10$UGtiR4k.V/VqE/K2tlo73e7gJiRDquP0aMVB8j.Uuto.ya7Qbhx0i', '2023-09-28 13:03:08', '2023-09-28 13:03:08'),
-(3, 'tes123t@example.com', '$2y$10$uwh.CNkt8xgAqKqjdUEsIe0ToTvt/o9jjxcDQOBDUDCsFd40AmJwi', '2023-09-29 20:12:34', '2023-09-29 20:12:34');
+(3, 'tes123t@example.com', '$2y$10$uwh.CNkt8xgAqKqjdUEsIe0ToTvt/o9jjxcDQOBDUDCsFd40AmJwi', '2023-09-29 20:12:34', '2023-09-29 20:12:34'),
+(4, 'test12312@example.com', '$2y$10$oUnDpuP6DPQIcCPoRUrOC.9hudq9MTknzWqW5oF0NY5em0zEnzODu', '2023-09-29 21:33:47', '2023-09-29 21:33:47');
 
 -- --------------------------------------------------------
 
@@ -136,7 +137,8 @@ CREATE TABLE `transactions` (
 --
 
 INSERT INTO `transactions` (`id`, `created_at`, `updated_at`, `employee_id`, `hours`) VALUES
-(1, '2023-09-28 16:01:35', '2023-09-28 16:01:35', 1, 8);
+(1, '2023-09-28 16:01:35', '2023-09-28 16:01:35', 1, 8),
+(2, '2023-09-29 22:55:45', '2023-09-29 22:55:45', 1, 8);
 
 -- --------------------------------------------------------
 
@@ -215,7 +217,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `failed_jobs`
@@ -239,7 +241,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT для таблицы `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
