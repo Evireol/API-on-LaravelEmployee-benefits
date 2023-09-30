@@ -16,30 +16,27 @@ class PayrollController extends Controller
         // Найти все непогашенные транзакции
         $unpaidTransactions = Transaction::where('paid', false)->get();
 
-        // Создать массив для хранения сумм выплат для каждого сотрудника
         $payouts = [];
 
-        // Рассчитать суммы и выплатить сотрудникам
+        // Рассчитать суммы и выплатит сотрудникам
         foreach ($unpaidTransactions as $transaction) {
             $employeeId = $transaction->employee_id;
             $hours = $transaction->hours;
 
-            // Рассчитать сумму выплаты для данной транзакции
+            // Рассчитать сумму выплат для данной транзакции
             $paymentAmount = $hours * 1000;
 
-            // Добавить сумму к выплате сотруднику
             if (isset($payouts[$employeeId])) {
                 $payouts[$employeeId] += $paymentAmount;
             } else {
                 $payouts[$employeeId] = $paymentAmount;
             }
 
-            // Пометить транзакцию как погашенную
+            // Пометит транзакцию как погашенную
             $transaction->paid = true;
             $transaction->save();
         }
 
-        // Вернуть результат в формате JSON
         return response()->json($payouts);
     }
     
@@ -50,7 +47,7 @@ class PayrollController extends Controller
             'hours' => 'required|numeric|min:0',
         ]);
     
-        $employee = Employee::findOrFail($employeeId); // Проверяем существование сотрудника
+        $employee = Employee::findOrFail($employeeId);
         $transaction = new Transaction();
         $transaction->employee_id = $employeeId;
         $transaction->hours = $request->input('hours');
@@ -71,21 +68,17 @@ class PayrollController extends Controller
      
     public function payAllSalaries()
     {
-        // Получите список всех сотрудников и суммы их накопившихся зарплат
+
         $employees = Employee::all();
     
         foreach ($employees as $employee) {
-            // Получите сумму накопившихся часов работы для сотрудника
+
             $totalHours = Transaction::where('employee_id', $employee->id)->sum('hours');
-    
-            // Рассчитайте зарплату для сотрудника (здесь можно использовать вашу логику расчета)
-            $salary = $totalHours * $hourlyRate; // Здесь $hourlyRate - ставка за час работы
-    
-            // Выплачиваем зарплату сотруднику (псевдокод)
-            // Вам нужно реализовать метод выплаты, например, отправить деньги на счет сотрудника или иным способом
+
+            $salary = $totalHours * $hourlyRate;
+
             $this->makePaymentToEmployee($employee, $salary);
     
-            // Помечаем все транзакции сотрудника как погашенные
             Transaction::where('employee_id', $employee->id)->update(['paid' => true]);
         }
     
