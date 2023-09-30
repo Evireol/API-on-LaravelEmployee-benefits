@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Сен 30 2023 г., 06:04
+-- Время создания: Сен 30 2023 г., 08:08
 -- Версия сервера: 8.0.24
 -- Версия PHP: 8.0.14
 
@@ -85,7 +85,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (6, '2023_09_25_234231_create_transactions_table', 2),
 (7, '2023_09_27_083233_add_email_to_employees_table', 3),
 (8, '2023_09_25_234222_create_employees_table', 4),
-(20, '2023_09_28_185047_add_hours_to_transactions_table', 5);
+(20, '2023_09_28_185047_add_hours_to_transactions_table', 5),
+(21, '2023_09_30_033826_add_pair_to_transactions', 6);
 
 -- --------------------------------------------------------
 
@@ -129,16 +130,17 @@ CREATE TABLE `transactions` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `employee_id` bigint UNSIGNED NOT NULL,
-  `hours` int NOT NULL DEFAULT '0'
+  `hours` int NOT NULL DEFAULT '0',
+  `paid` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `transactions`
 --
 
-INSERT INTO `transactions` (`id`, `created_at`, `updated_at`, `employee_id`, `hours`) VALUES
-(1, '2023-09-28 16:01:35', '2023-09-28 16:01:35', 1, 8),
-(2, '2023-09-29 22:55:45', '2023-09-29 22:55:45', 1, 8);
+INSERT INTO `transactions` (`id`, `created_at`, `updated_at`, `employee_id`, `hours`, `paid`) VALUES
+(1, '2023-09-28 16:01:35', '2023-09-30 00:44:29', 1, 8, 1),
+(2, '2023-09-29 22:55:45', '2023-09-30 00:44:29', 1, 8, 1);
 
 -- --------------------------------------------------------
 
@@ -229,7 +231,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT для таблицы `personal_access_tokens`

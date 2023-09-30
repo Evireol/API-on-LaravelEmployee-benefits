@@ -13,20 +13,34 @@ class PayrollController extends Controller
 
     public function index()
     {
-        $employeePayments = DB::table('transactions')
-        ->select('employee_id', DB::raw('SUM(hours) * 1000 as total_payment'))
-        ->groupBy('employee_id')
-        ->get();
+        // Найти все непогашенные транзакции
+        $unpaidTransactions = Transaction::where('paid', false)->get();
 
-    $formattedPayments = [];
-    foreach ($employeePayments as $payment) {
-        $formattedPayments[] = [
-            'employee_id' => $payment->employee_id,
-            'total_payment' => $payment->total_payment,
-        ];
-    }
+        // Создать массив для хранения сумм выплат для каждого сотрудника
+        $payouts = [];
 
-    return response()->json($formattedPayments);
+        // Рассчитать суммы и выплатить сотрудникам
+        foreach ($unpaidTransactions as $transaction) {
+            $employeeId = $transaction->employee_id;
+            $hours = $transaction->hours;
+
+            // Рассчитать сумму выплаты для данной транзакции
+            $paymentAmount = $hours * 1000;
+
+            // Добавить сумму к выплате сотруднику
+            if (isset($payouts[$employeeId])) {
+                $payouts[$employeeId] += $paymentAmount;
+            } else {
+                $payouts[$employeeId] = $paymentAmount;
+            }
+
+            // Пометить транзакцию как погашенную
+            $transaction->paid = true;
+            $transaction->save();
+        }
+
+        // Вернуть результат в формате JSON
+        return response()->json($payouts);
     }
     
 
