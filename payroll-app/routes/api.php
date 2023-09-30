@@ -6,10 +6,13 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PayrollController;
 
-Route::post('/employees', [PayrollController::class, 'createEmployee']);
-Route::post('/employees/{employeeId}/transactions', [PayrollController::class, 'submitTransaction']);
-Route::get('/unpaid-salaries', [PayrollController::class, 'unpaidSalaries']);
-Route::post('/pay-all-salaries', [PayrollController::class, 'payAllSalaries']);
+Route::get('/payroll', 'App\Http\Controllers\PayrollController@index');
+Route::post('/employees', ['App\Http\Controllers\PayrollController', 'createEmployee']);
+Route::post('/employees/{employeeId}/transactions', ['App\Http\Controllers\PayrollController', 'submitTransaction']);
+Route::get('/unpaid-salaries', ['App\Http\Controllers\PayrollController', 'unpaidSalaries']);
+Route::post('/pay-all-salaries', ['App\Http\Controllers\PayrollController', 'payAllSalaries']);
+Route::get('/employee-payments', 'App\Http\Controllers\PayrollController@employeePayments');
+
 
 /*
 |--------------------------------------------------------------------------

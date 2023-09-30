@@ -6,22 +6,27 @@ use App\Models\Employee;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class PayrollController extends Controller
 {
-    public function createEmployee(Request $request)
+
+    public function index()
     {
-        $request->validate([
-            'email' => 'required|email|unique:employees',
-            'password' => 'required|min:6',
-        ]);
-    
-        $employee = new Employee();
-        $employee->email = $request->input('email');
-        $employee->password = Hash::make($request->input('password'));
-        $employee->save();
-    
-        return response()->json(['message' => 'Employee created successfully'], 201);
+        $employeePayments = DB::table('transactions')
+        ->select('employee_id', DB::raw('SUM(hours) * 1000 as total_payment'))
+        ->groupBy('employee_id')
+        ->get();
+
+    $formattedPayments = [];
+    foreach ($employeePayments as $payment) {
+        $formattedPayments[] = [
+            'employee_id' => $payment->employee_id,
+            'total_payment' => $payment->total_payment,
+        ];
+    }
+
+    return response()->json($formattedPayments);
     }
     
 
@@ -49,8 +54,6 @@ class PayrollController extends Controller
     
         return response()->json($unpaidSalaries, 200);
     }
-    
-
      
     public function payAllSalaries()
     {
