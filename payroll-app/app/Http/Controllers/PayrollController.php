@@ -11,6 +11,21 @@ use Illuminate\Support\Facades\DB;
 class PayrollController extends Controller
 {
 
+        public function createEmployee(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:employees',
+            'password' => 'required|min:6',
+        ]);
+
+        $employee = new Employee();
+        $employee->email = $request->input('email');
+        $employee->password = Hash::make($request->input('password'));
+        $employee->save();
+
+        return response()->json(['message' => 'Employee created successfully'], 201);
+    }
+
     public function index()
     {
         // Найти все непогашенные транзакции
